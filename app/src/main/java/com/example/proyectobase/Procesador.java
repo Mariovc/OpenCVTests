@@ -1,6 +1,9 @@
 package com.example.proyectobase;
 
+import org.opencv.core.Core;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * Author: Mario Velasco Casquero
@@ -8,13 +11,36 @@ import org.opencv.core.Mat;
  * Email: m3ario@gmail.com
  */
 public class Procesador {
+    Mat Gx;
+    Mat Gy;
+    Mat Gx2;
+    Mat Gy2;
+    Mat ModGrad2;
+    Mat ModGrad;
+    Mat ModAng;
 
     public Procesador() { //Constructor
-
+        Gx = new Mat();
+        Gy = new Mat();
+        Gx2 = new Mat();
+        Gy2 = new Mat();
+        ModGrad = new Mat();
+        ModGrad2 = new Mat();
+        ModAng = new Mat();
     }
 
     public Mat procesa(Mat entrada) {
-        Mat salida = entrada.clone();
+        Mat salida = new Mat();
+        Imgproc.Sobel(entrada, Gx, CvType.CV_32FC1 , 1, 0); //Derivada primera rto x
+        Imgproc.Sobel(entrada, Gy, CvType.CV_32FC1, 0, 1); //Derivada primera rto y
+        Core.multiply(Gx, Gx, Gx2); //Gx2 = Gx*Gx elemento a elemento
+        Core.multiply(Gy, Gy , Gy2); //Gy2 = Gy*Gy elemento a elemento
+        ModGrad = new Mat();
+        Core.add( Gx2 , Gy2, ModGrad2);
+        ModGrad = new Mat();
+        Core.sqrt(ModGrad2,ModGrad);
+        Core.cartToPolar(Gx, Gy, ModGrad, ModAng);
+        ModGrad.convertTo(salida, CvType.CV_8UC1);
         return salida;
     }
 }
