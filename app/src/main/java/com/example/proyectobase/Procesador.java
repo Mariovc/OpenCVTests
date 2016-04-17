@@ -28,8 +28,8 @@ public class Procesador {
         Core.extractChannel(entrada, green, 1);
         Core.extractChannel(entrada, blue, 2);
 
-        Core.max(green, blue, maxGB);
-        Core.subtract(red, maxGB, salida);
+        Core.max(red, blue, maxGB);
+        Core.subtract(green, maxGB, salida);
         if(salida.channels() == 1)
             Imgproc.cvtColor(salida, salida, Imgproc.COLOR_GRAY2RGBA);
         return salida;
