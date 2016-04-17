@@ -38,6 +38,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
     private int indiceCamara = CameraBridgeViewBase.CAMERA_ID_BACK;
     private int cam_anchura = 320;// resolucion deseada de la imagen
     private int cam_altura = 240;
+    private Procesador procesador;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
 //Interface CvCameraViewListener2
 
     public void onCameraViewStarted(int width, int height) {
+        procesador = new Procesador();
         cam_altura = height; //Estas son las que se usan de verdad
         cam_anchura = width;
     }
@@ -112,7 +114,7 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
             }
             entrada = imagenRecurso_;
         }
-        Mat salida = entrada.clone();
+        Mat salida = procesador.procesa(entrada);
 
         if (guardarSiguienteImagen) {//Para foto salida debe ser rgba
             takePhoto(entrada, salida);
