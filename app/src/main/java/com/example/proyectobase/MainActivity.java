@@ -19,6 +19,7 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
+import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -112,7 +113,9 @@ public class MainActivity extends Activity implements CameraBridgeViewBase.CvCam
             }
             entrada = imagenRecurso_;
         }
-        Mat salida = entrada.clone();
+        Mat esquina = entrada.submat(0,10,0,10); //Arriba-izquierda
+        esquina.setTo(new Scalar(255,255,255));
+        Mat salida = entrada;
 
         if (guardarSiguienteImagen) {//Para foto salida debe ser rgba
             takePhoto(entrada, salida);
